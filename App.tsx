@@ -1,118 +1,62 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { View, Image, StyleSheet, ScrollView } from 'react-native';
+import Block from './components/Block';
+import Banner from './components/Banner';
+import Button from './components/Button';
+import TextInput from './components/TextInput';
+import { ThemeProvider, useTheme } from './components/Theme';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const RegistrationScreen = () => {
+  const { theme, toggleTheme } = useTheme();
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={theme === 'light' ? styles.lightContainer : styles.darkContainer}>
+      <SafeAreaView style={{flex:1}}>
+      <Banner source={require('./images/image2.png')}/>
+      <Block title="Thông tin cá nhân">
+        <TextInput placeholder="Họ và tên" />
+        <TextInput placeholder="Email" />
+        <TextInput placeholder="Số điện thoại" />
+      </Block>
+      <Block title="Thông tin khóa học">
+        <TextInput placeholder="Tên khóa học" />
+        <TextInput placeholder="Thời gian học" />
+      </Block>
+      <Block title="Thông tin liên hệ">
+        <TextInput placeholder="Địa chỉ" />
+        <TextInput placeholder="Số điện thoại liên hệ" />
+      </Block>
+      <Button title="Đăng ký" onPress={() => { /* Xử lý đăng ký */ }} />
+      <Button title="Đổi Theme" onPress={toggleTheme} />
+      </SafeAreaView>
     </View>
   );
-}
+};
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const styles = StyleSheet.create({
+  lightContainer: {
+    flex: 1,
+    backgroundColor: '#f9f9f9',
+    padding: 20,
+  },
+  darkContainer: {
+    flex: 1,
+    backgroundColor: '#333',
+    padding: 20,
+  },
+});
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+const App = () => {
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView>
+        <ThemeProvider>
+          <RegistrationScreen />
+        </ThemeProvider>
       </ScrollView>
     </SafeAreaView>
   );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+};
 
 export default App;
